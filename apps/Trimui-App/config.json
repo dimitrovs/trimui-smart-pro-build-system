@@ -1,0 +1,7 @@
+{
+  "label":"Trimui-App",
+  "icon":"icon.png",
+  "iconsel":"icon.png",
+  "launch":"launch.sh",
+  "description":"Program for the Trimui Smart Pro"
+}

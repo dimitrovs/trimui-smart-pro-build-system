@@ -2,45 +2,39 @@
 
 A build system for creating applications for the Trimui Smart Pro. This build system provides a Dockerfile and a Makefile for building your application and necessary configuration files.
 
-## Setup Instructions
+## Mac ARM (Apple Silicon) Support
 
-### 1. Clone this repository
+This fork has been modified to work natively on Mac ARM (Apple Silicon) machines. Unlike the original x86-based build system that used the Linaro toolchain binaries, this version uses the native ARM cross-compiler (`aarch64-linux-gnu-g++`) available in Ubuntu's package repositories. 
+
+**Key differences from the original:**
+- Uses native `aarch64-linux-gnu-gcc/g++` from Ubuntu packages instead of the x86 Linaro toolchain
+- The Linaro toolchain's `bin/` directory is disabled (renamed to `bin.disabled`)
+- Compatible with Docker on Mac ARM without platform emulation overhead
+- Maintains the same sysroot and libraries from the official Trimui SDK
+
+## How to Build
+
+This project uses a Docker-based build system.
+
+### 1. Enter the Build Environment
+
+Run the following command from the root of the project. This will build the Docker image if it doesn't exist and then drop you into a shell inside the container.
 
 ```bash
-git clone https://github.com/Maxwell-SS/trimui-smart-pro-build-system.git
-cd trimui-smart-pro-build-system
+make run
 ```
 
-### 2. Build and run the Docker container
-The Dockerfile will automatically download and extract all required SDK components from the official Trimui GitHub <a href="https://github.com/trimui/toolchain_sdk_smartpro/releases" target="_blank">repository</a> during the build process.
-No manual downloading or setup is needed.
+### 2. Compile the Application
 
-For macOS (Arm):
+Once you are inside the Docker container's shell, you can compile the desired application. For example, to build the `Trimui-App`:
+
 ```bash
-docker build --platform linux/amd64 -t trimui-sdk .
-docker run -it --rm -v $(pwd):/app trimui-sdk bash
+cd apps/Trimui-App && make
 ```
 
-For Linux (Untested):
-```bash
-docker build -t trimui-sdk .
-docker run -it --rm -v $(pwd):/app trimui-sdk bash
-```
+After building, the output will be located in the `build` directory on your host machine.
 
-For Windows (PowerShell):
-```powershell
-docker build -t trimui-sdk .
-docker run -it --rm -v ${PWD}:/app trimui-sdk bash
-```
-
-### 3. Build your application
-
-Inside the Docker container:
-```bash
-make
-```
-
-### 4. Deploying to the Trimui Smart Pro
+## Deploying to the Trimui Smart Pro
 
 After building, the complete application will be in  `build/[APP_FOLDER]`. Copy the entire app folder to the `/SDCARD/Apps` folder on your Trimui Smart Pro.
 
@@ -65,4 +59,3 @@ The included `main.cpp` file is a controller testing app that allows you to visu
 ![Controller Tester Screenshot](readme/capture.png)
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
-

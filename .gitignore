@@ -31,4 +31,17 @@
 *.out
 *.app
 
+# macOS
 *.DS_Store
+
+# Build output directory
+build/
+
+# Old/backup files
+*.old
+*.old2
+*.bak
+*~
+
+# Separate git repositories (manage these as submodules if needed)
+apps/Trimui-App-SSH/
